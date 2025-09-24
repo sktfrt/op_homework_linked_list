@@ -92,3 +92,4 @@ dotnet test
 
 - [Связный список (wiki)](https://ru.wikipedia.org/wiki/Связный_список)
 - [Реализация Linked List на C++](https://habr.com/ru/sandbox/153128/)
+- [Урок на YouTube](https://www.youtube.com/watch?v=N6dOwBde7-M)

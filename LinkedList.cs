@@ -1,20 +1,10 @@
 using System;
+using Program;
 
 namespace Program
 {
-    /// <summary>
-    /// Односвязный список с элементами обобщённого типа.
-    /// 
-    /// Параметр <typeparamref name="T"/> обозначает тип значений,
-    /// которые будут храниться в списке.
-    /// Например:
-    /// - LinkedList<int>  — список целых чисел
-    /// - LinkedList<string> — список строк
-    /// - LinkedList<MyClass> — список объектов пользовательского класса
-    /// </summary>
     public class LinkedList<T>
     {
-        // Внутренний узел списка
         private class Node
         {
             public T Value { get; set; }
@@ -29,53 +19,108 @@ namespace Program
 
         private Node? head;
 
-        /// <summary>
-        /// Добавить элемент в конец списка.
-        /// Если список пустой – новый узел становится head.
-        /// Если не пустой – в цикле (или рекурсией) пройти по Next до конца и добавить там новый узел.
-        /// </summary>
+
         public void Add(T item)
         {
-            throw new NotImplementedException("implement me");
+            Node p = head;
+            Node lastElem = null;
+            Node newValue = new Node(item);
+
+            if (head == null)
+            {
+                head = newValue;
+            }
+            else
+            {
+                while (p != null)
+                {
+                    lastElem = p;
+                    p = p.Next;
+                }
+                lastElem.Next = newValue;
+            }
         }
 
-        /// <summary>
-        /// Удалить первый найденный элемент по значению.
-        /// Если элемент найден – удалить и вернуть true.
-        /// Если элемента нет – вернуть false.
-        /// </summary>
         public bool Remove(T item)
         {
-            throw new NotImplementedException("implement me");
+            if (head == null) return false;
+
+            Node p = head;
+            Node last = null;
+            Node prevForLast = null;
+            Node prevForMid = null;
+
+            while (p != null)
+            {
+                prevForLast = last;
+                last = p;
+                p = p.Next;
+            }
+
+            p = head;
+
+            if (p.Value.Equals(item))
+            {
+                head = p.Next;
+            }
+            else if (last.Value.Equals(item))
+            {
+                prevForLast.Next = null;
+            }
+            else
+            {
+                while (p != null && !p.Value.Equals(item))
+                {
+                    prevForMid = p;
+                    p = p.Next;
+                }
+
+                if (p == null) return false;
+                
+                if (prevForMid == null)
+                {
+                    head = p.Next;
+                }
+                else
+                {
+                    prevForMid.Next = p.Next;
+                }
+            }
+            return true;
         }
 
-        /// <summary>
-        /// Вернуть элемент по индексу (0-based).
-        /// Пройти по цепочке Next, пока не дойдём до нужного индекса.
-        /// Если индекс за пределами списка – выбросить ArgumentOutOfRangeException.
-        /// </summary>
         public T Get(int index)
         {
-            throw new NotImplementedException("implement me");
+            int cnt = 0;
+            Node p = head;
+
+            while (cnt != index && p != null)
+            {
+                p = p.Next;
+                cnt++;
+            }
+            if (p == null) throw new ArgumentOutOfRangeException($"Error! Index out of range! Max index is: {cnt}");
+            return p.Value;
         }
 
-        /// <summary>
-        /// Подсчитать количество элементов в списке.
-        /// Пройти по цепочке Next от head до конца, увеличивая счётчик.
-        /// Вернуть количество.
-        /// </summary>
         public int Count()
         {
-            throw new NotImplementedException("implement me");
+            int cnt = 0;
+            Node p = head;
+
+            if (head == null) return 0;
+            while (p != null)
+            {
+                cnt++;
+                p = p.Next;
+            }
+            return cnt;
         }
 
-        /// <summary>
-        /// Очистить список.
-        /// Достаточно обнулить head, тогда вся цепочка узлов будет недоступна и сборщик мусора освободит память.
-        /// </summary>
         public void Clear()
         {
-            throw new NotImplementedException("implement me");
+            head = null;
         }
     }
 }
+
